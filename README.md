@@ -1,2 +1,2 @@
-# C-
-This is my codes about app,data structure ,language study.
+# C++
+This is my codes about date structure and language study by using C++.
