@@ -1,0 +1,88 @@
+#include<stdio.h>
+#include<vector>
+
+struct BinaryTreeNode
+{
+    int value;
+    BinaryTreeNode* left;
+    BinaryTreeNode* right;
+};
+
+struct BinaryTreeNode* new_node(int value)
+{
+  struct BinaryTreeNode *node = new struct BinaryTreeNode;
+  node->value = value;
+  node->left = NULL;
+  node->right = NULL;
+  return node;
+}
+
+void add_node(struct BinaryTreeNode *root, int lvalue,int rvalue)
+{
+  struct BinaryTreeNode *left = new_node(lvalue);
+  struct BinaryTreeNode *right = new_node(rvalue);
+  root->left = left;
+  root->right = right;
+}
+
+void doFindPath(BinaryTreeNode* root, int expect, std::vector<int> path, int current)
+{
+    current += root->value;//Update path and current
+    path.push_back(root->value);//insert the line
+
+    bool isLeaf = root->left==NULL && root->right==NULL;
+    if(isLeaf && current == expect)//print the result
+    {
+        std::vector<int>::iterator iter = path.begin();
+        while(iter != path.end())
+        {
+            printf("%d ", *iter);
+            iter ++;
+        }
+        printf("\n");
+    }
+
+    if(root->left)
+        doFindPath(root->left, expect, path, current);
+    if(root->right)
+        doFindPath(root->right, expect, path, current);
+
+}
+
+void findPath(BinaryTreeNode* root, int expect)
+{
+    if(root == NULL)
+        return;
+
+    std::vector<int> path;
+    int current = 0;
+    doFindPath(root, expect, path, current);
+}
+
+//delete the tree
+void clean_tree(BinaryTreeNode *head)
+{
+  if(head->left != NULL)
+      clean_tree(head->left);
+  if(head->right != NULL)
+      clean_tree(head->right);
+
+  delete head;
+}
+
+int main()
+{
+  //create a binarytree 
+  struct BinaryTreeNode* head = new struct BinaryTreeNode;
+  head->value = 1;
+  head->left = NULL;
+  head->right = NULL;
+
+  add_node(head,3,4);
+  add_node(head->left,5,2);
+  add_node(head->right,4,2);
+  
+  findPath(head,9);
+  clean_tree(head);
+  return 0;
+}
